@@ -4,36 +4,54 @@ namespace Models;
 
 use Core\Database;
 
-abstract class Table{
+abstract class Table {
+
     protected static $table_name;
 
-    static function select($join = "*", $columns = null, $where = null){
-        return Database::instance()->select($join, $columns, $where);
+    static function select($join = "*", $columns = null, $where = null) {
+        return Database::instance()
+            ->select(static::$table_name, $join, $columns, $where);
     }
 
-    function get($join = null, $columns = null, $where = null) {
-        return Database::instance()->get(static::$table_name, $join, $columns, $where);
+    static function get($join = null, $columns = null, $where = null) {
+        return Database::instance()
+            ->get(static::$table_name, $join, $columns, $where);
     }
 
-    function insert($datas) {
-        return Database::instance()->insert(static::$table_name, $datas);
+    static function has($where) {
+        return Database::instance()
+            ->has(static::$table_name, $where);
     }
 
-    function update($data, $where = null) {
-        return Database::instance()->update(static::$table_name, $data, $where);
+    static function insert($datas) {
+        return Database::instance()
+            ->insert(static::$table_name, $datas);
     }
 
-    function delete($where) {
-        return Database::instance()->delete(static::$table_name, $where);
+    static function update($datas, $where) {
+       return Database::instance()
+           ->update($datas, $where);
     }
 
-    function has($where) {
-        return Database::instance()->has(static::$table_name, $where);
+    static function delete($where) {
+        return Database::instance()
+            ->delete(static::$table_name, $where);
     }
 
-    function getById($id) {
-        return $this->get("*", [
+    static function count($where = null) {
+        return Database::instance()
+            ->count(static::$table_name, $where);
+    }
+
+    static function getById($id) {
+        return self::get([
             "id" => $id
         ]);
     }
+
+    static function max($join, $column = null, $where = null) {
+        return Database::instance()
+            ->max(static::$table_name, $join, $column, $where);
+    }
+
 }
