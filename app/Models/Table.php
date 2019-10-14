@@ -2,56 +2,44 @@
 
 namespace Models;
 
-use Core\Database;
+use Core\Abstracts\Model;
 
-abstract class Table {
+abstract class Table extends Model {
 
     protected static $table_name;
 
-    static function select($join = "*", $columns = null, $where = null) {
-        return Database::instance()
-            ->select(static::$table_name, $join, $columns, $where);
+    function select($join = "*", $columns = null, $where = null) {
+        return $this->db()->select(static::$table_name, $join, $columns, $where);
     }
 
-    static function get($join = null, $columns = null, $where = null) {
-        return Database::instance()
-            ->get(static::$table_name, $join, $columns, $where);
+    function get($join = null, $columns = null, $where = null) {
+        return $this->db()->get(static::$table_name, $join, $columns, $where);
     }
 
-    static function has($where) {
-        return Database::instance()
-            ->has(static::$table_name, $where);
+    function insert($datas) {
+        return $this->db()->insert(static::$table_name, $datas);
     }
 
-    static function insert($datas) {
-        return Database::instance()
-            ->insert(static::$table_name, $datas);
+    function update($data, $where = null) {
+        return $this->db()->update(static::$table_name, $data, $where);
     }
 
-    static function update($datas, $where) {
-       return Database::instance()
-           ->update($datas, $where);
+    function delete($where) {
+        return $this->db()->delete(static::$table_name, $where);
     }
 
-    static function delete($where) {
-        return Database::instance()
-            ->delete(static::$table_name, $where);
+    function has($where) {
+        return $this->db()->has(static::$table_name, $where);
     }
 
-    static function count($where = null) {
-        return Database::instance()
-            ->count(static::$table_name, $where);
-    }
-
-    static function getById($id) {
-        return self::get([
+    function getById($id) {
+        return $this->get("*", [
             "id" => $id
         ]);
     }
 
-    static function max($join, $column = null, $where = null) {
-        return Database::instance()
-            ->max(static::$table_name, $join, $column, $where);
+    function count($where = null) {
+        return $this->db()->count(static::$table_name, $where);
     }
 
 }

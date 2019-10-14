@@ -1,18 +1,9 @@
 <?php
 
-sleep($argv[1]);
+session_start();
 
-$limit = 15 + $argv[1];
-set_time_limit($limit);
+use Telegram\Bot\Api;
 
 include "vendor/autoload.php";
 
-$time = [];
-
- do {
-
-    $start = microtime(true);
-    new App();
-    $time[] = microtime(true) - $start;
-
-} while (array_sum($time) / 1000 <= $limit - max($time) / 1000);
+new App();

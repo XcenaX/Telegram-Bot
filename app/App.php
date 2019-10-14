@@ -1,24 +1,35 @@
 <?php
 
 use Core\Config;
-use Core\Telegram;
-use Telegram\Bot\Objects\Update;
+use Core\Helpers;
+use Klein\Klein;
+use Whoops\Handler\PrettyPageHandler;
+use Whoops\Run;
 
-class App {
+final class App {
 
     public function __construct()
     {
+        $this->initErrorHandler();
+        $this->initRouter();
+    }
 
-        Telegram::init(Config::telegram());
+    private function initRouter() {
+        include Helpers::path("app", "routing", "web.php");
+    }
 
-        Telegram::eachUpdate(function (Update $update) {
+    private function initErrorHandler() {
+        $isDev = Config::composer("minimum-stability");
+        $isDev = ($isDev == "dev");
 
-            $chat_id = $update->getMessage()["chat"]["id"];
-            $text = $update->getMessage()["text"];
+        ini_set("error_reporting", $isDev);
+        error_reporting((E_ALL ^ E_NOTICE) * $isDev);
 
-            Telegram::sendMessage($chat_id, $text);
-
-        });
+        if ($isDev) {
+            $handler = new Run();
+            $handler->appendHandler(new PrettyPageHandler());
+            $handler->register();
+        }
 
     }
 

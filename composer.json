@@ -1,13 +1,19 @@
 {
-  "require": {
-    "irazasyed/telegram-bot-sdk": "^3.0",
-    "catfan/medoo": "^1.7",
-    "php": ">=7.2",
-    "ext-json": "*"
-  },
-  "autoload": {
-    "psr-4": {
-      "": "./app"
+    "type": "project",
+    "require": {
+        "catfan/medoo": "dev-master",
+        "klein/klein": "dev-master",
+        "smarty/smarty": "^3.1@dev",
+        "ext-json": "*"
+    },
+    "require-dev": {
+        "filp/whoops": "^2.2@dev"
+    },
+    "license": "MIT",
+    "minimum-stability": "dev",
+    "autoload": {
+        "psr-4": {
+            "": "./app"
+        }
     }
-  }
 }

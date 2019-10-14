@@ -15,7 +15,7 @@ class Config {
         if (self::$cfgs[$name])
             $cfg = self::$cfgs[$name];
         else {
-            $cfg = include Helpers::path("config", "$name.php");
+            $cfg = include Helpers::path("app", "config", "$name.php");
             self::$cfgs[$name] = $cfg;
         }
 
@@ -23,8 +23,26 @@ class Config {
 
     }
 
-    static function telegram($key = null) {
-        return self::getFromName("telegram", $key);
+    static function database($key = null) {
+        return self::getFromName("database", $key);
+    }
+
+    static function composer($key = null) {
+
+        $composerDir = Helpers::path("composer.json");
+        $composerFile = file_get_contents($composerDir);
+        $composer = json_decode($composerFile, true);
+
+        return Helpers::keyOrArray($composer, $key);
+
+    }
+
+    static function main($key = null) {
+        return self::getFromName("main", $key);
+    }
+
+    static function globals($key = null) {
+        return self::getFromName("globals", $key);
     }
 
 }
